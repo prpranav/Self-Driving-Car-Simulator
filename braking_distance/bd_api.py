@@ -78,10 +78,22 @@ class Braking_Distance_Estimator():
     '''
     def simple_analytical_sd(self, initial_velocity, amt):
         #CODE HERE: Paste corresponding code from Jupyter Notebook
+        x = self.brake_weight * amt + self.rolling_bias #is amt the same as Pa-brake
+        f = self.friction_constant #should this be negative
+        v0 = initial_velocity #is this initial_velocity
+        if 1-f*v0/x <= 0:
+            return float('inf')
+        return 1/f * (v0 + x/f * np.log(1-f*v0/x))
 
     def simple_analytical_approx(self, inp, tol = 1e-5, min_amt = 0, max_amt = 1):
         #CODE HERE: Paste corresponding code from Jupyter Notebook
-
+        mid_amt = (min_amt + max_amt) / 2
+        if max_amt - min_amt >= 2 * tol:
+            if self.simple_analytical_sd(inp[0], mid_amt) > inp[1]:
+                return self.simple_analytical_approx(inp, tol, mid_amt, max_amt)
+            elif self.simple_analytical_sd(inp[0], mid_amt) < inp[1]:
+                return self.simple_analytical_approx(inp, tol, min_amt, mid_amt)
+        return mid_amt
     #File path to Braking Distance folder
     def bd_fp(self):
         import settings
