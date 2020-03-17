@@ -17,7 +17,9 @@ def _try_import(module):
 _possible_modules = [
   'manual',
   'sysID_data',
-  'sysID_test'
+  'sysID_test',
+  'braking_distance',
+  'vision'
 ]
 
 for m in _possible_modules:
