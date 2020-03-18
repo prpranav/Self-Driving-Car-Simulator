@@ -270,11 +270,20 @@ class Car_Interface():
         All except for the brake_weight should be positive.
         '''
         #Coefficients corresponding to the motion dynamics
+<<<<<<< HEAD
         self.accelerator_weight = 0.9310142653342303
         self.brake_weight = -0.20260073156791933
         self.friction_constant = -0.07058763078222477
         self.rolling_bias = 0.019537621349392548
          
+=======
+        self.rolling_bias = 0.009929075478129247
+        self.friction_constant = 0.10974291535061839
+
+        self.accelerator_weight = 0.10000558634381539
+        self.brake_weight = -0.2499897051771736
+
+>>>>>>> e85aa159abb29b9eba779ce605b479a4dfa30407
         '''
         If approximating the complex internal model we use a FCN
         to model the acceleration as a function of the pedal depressions
@@ -350,9 +359,15 @@ class Car_Interface():
                 accel_amt = 0
                 brake_amt = amount
             #is friction_constant supposed to have a negative sign in front?
+<<<<<<< HEAD
             part0 = self.accelerator_weight * accel_amt + self.brake_weight * brake_amt
             part1 = -self.friction_constant * abs(self.velocity) + self.rolling_bias
             self.accel = part0 + part1
+=======
+            partA = self.accelerator_weight * accel_amt + self.brake_weight * brake_amt
+            partB = -self.friction_constant * abs(self.velocity) + self.rolling_bias
+            self.accel = partA + partB
+>>>>>>> e85aa159abb29b9eba779ce605b479a4dfa30407
 
 
         elif (self.model == "complex"):
