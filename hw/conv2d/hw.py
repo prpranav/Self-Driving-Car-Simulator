@@ -21,8 +21,9 @@ def conv2d_grayscale(img, ker):
     # Here is the numpy documentation of `.shape`:
     # https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.shape.html
     # !!! YOUR CODE HERE
-    j, i = _
-    m, n = _
+    j, i = ker.shape
+    m, n = img.shape
+
     # !!! ==============
 
     # Now compute the feature map size. See slide 85 for a reference.
@@ -31,8 +32,9 @@ def conv2d_grayscale(img, ker):
     # that are a little smaller than those of the image.
     #
     # !!! YOUR CODE HERE
-    Nx = _
-    Ny = _
+    Nx = n - i + 1
+    Ny = m - j + 1
+
     # !!! ==============
 
     # Define an empty numpy array of the right size and type for the feature map.
@@ -45,7 +47,7 @@ def conv2d_grayscale(img, ker):
     # why the type is what it is. Hint: think about the format of our image data
     #
     # !!! YOUR CODE HERE
-    feature_map = _
+    feature_map = np.empty([Nx, Ny], dtype = float)
     # !!! ==============
 
     # Now we just need to iterate over the possible kernel locations,
@@ -72,9 +74,12 @@ def conv2d_grayscale(img, ker):
     # Store the result in the feature_map array.
     #
     # !!! YOUR CODE HERE
-    for x in _:
-        for y in _:
-            feature_map[_, _] = _
+    for x in range(Nx):
+        for y in range(Ny):
+            curr = img[y: y + j, x: x + i]
+            if(curr.shape == (2, 3)):
+                print(x, y)
+            feature_map[y, x] = np.sum(np.multiply(ker, curr))
     # !!! ==============
 
     return feature_map
@@ -97,8 +102,8 @@ def conv2d(img, ker):
     # about the number of channels that the image and the kernel have.
     #
     # !!! YOUR CODE HERE
-    j, i, kc = _
-    m, n, ic = _
+    j, i, kc = ker.shape
+    m, n, ic = img.shape
     # !!! ==============
 
     # Sanity check!
@@ -109,7 +114,7 @@ def conv2d(img, ker):
     # Use an `assert` statement to verify this.
     #
     # !!! YOUR CODE HERE
-    assert kc ???????? ic
+    assert kc == ic
     # !!! ==============
 
     # Define the size of the output feature map again.
@@ -120,15 +125,15 @@ def conv2d(img, ker):
     #
     #
     # !!! YOUR CODE HERE
-    Nx = _
-    Ny = _
-    Nc = _
+    Nx = n-i+1
+    Ny = m-j+1
+    Nc = kc
     # !!! ==============
 
     # Create an empty array for the feature map again.
     #
     # !!! YOUR CODE HERE
-    feature_map = _
+    feature_map = np.empty([Nx, Ny], dtype = float)
     # !!! ==============
 
     # Iterate over the valid kernel placements and compute the convolution.
@@ -138,9 +143,9 @@ def conv2d(img, ker):
     # _multiple channels_!
     #
     # !!! YOUR CODE HERE
-    for x in _:
-        for y in _:
-            feature_map[_] = _
+    for x in range(Nx):
+        for y in range(Ny):
+            feature_map[y, x] += np.sum(np.multiply(ker, img[y: y + j, x: x+ i]))
     # !!! ==============
 
     return feature_map
@@ -162,7 +167,7 @@ def conv2d_many(img, kers):
     # but you can use a for loop or any other way of iterating over lists.
     #
     # !!! YOUR CODE HERE
-    feature_maps = _
+    feature_maps = [conv2d(img, i) for i in kers]
     # !!! ==============
 
     # Now we need to stack the feature maps in the channel dimension.
@@ -179,7 +184,7 @@ def conv2d_many(img, kers):
     # Hint: look at `stack_kernel` from the Color section.
     #
     # !!! YOUR CODE HERE
-    stacked_feature_maps = np.stack(feature_maps, axis=_)
+    stacked_feature_maps = np.stack(feature_maps, axis=2)
     # !!! ==============
 
     return stacked_feature_maps
@@ -205,7 +210,7 @@ def conv2d_padding(img, kers):
     # can be used to find the shape of the kernels.
     #
     # !!! YOUR CODE HERE
-    j, i, kc = _
+    j, i, kc = kers[0].shape
     # !!! ==============
 
     # Now compute the padding for each axis of the image
@@ -224,10 +229,9 @@ def conv2d_padding(img, kers):
     #
     # This value should only depend on the size of the kernel.
     #
-    # !!! YOUR CODE HERE
-    y_pad = _
-    x_pad = _
-    c_pad = _
+    y_pad = (i - 2) // 2
+    x_pad = (j - 1) // 2
+    c_pad = 0
     # !!! ==============
 
     # numpy has a very verbose syntax for padding images
@@ -256,12 +260,11 @@ def conv2d_full(img, kers, stride=1):
     # Take the padding code from `conv2d_padding`.
     # We will reuse it here to pad the image:
     #
-    # !!! YOUR CODE HERE
-    j, i, kc = _
+    j, i, kc = kers[0].shape
 
-    y_pad = _
-    x_pad = _
-    c_pad = _
+    y_pad = i - 2
+    x_pad = j - 2
+    c_pad = 0
     # !!! ==============
 
     padding = ((y_pad, y_pad), (x_pad, x_pad), (c_pad, c_pad))
@@ -271,7 +274,7 @@ def conv2d_full(img, kers, stride=1):
     # Feel free to copy from `conv2d`!
     #
     # !!! YOUR CODE HERE
-    m, n, ic = _
+    m, n, ic = img.shape
     # !!! ==============
 
     # We will iterate over the kernels so that we can support multi-channel
@@ -280,8 +283,7 @@ def conv2d_full(img, kers, stride=1):
     for ker in kers:
         # Decompose the shape of the current kernel into variables, as usual:
         #
-        # !!! YOUR CODE HERE
-        j, i, kc = _
+        j, i, kc = ker.shape
         # !!! ==============
 
         # Now comes the first part that's different with stride not equal to 1.
@@ -298,8 +300,8 @@ def conv2d_full(img, kers, stride=1):
         #       part of the skeleton code first!
         #
         # !!! YOUR CODE HERE
-        Nx = _
-        Ny = _
+        Nx = (n - i + 1) //stride
+        Ny = (m - j + 1) //stride
         # !!! ==============
 
         # Do this one in two steps:
@@ -314,18 +316,17 @@ def conv2d_full(img, kers, stride=1):
         #         if stride = 3, both x and y should be one of:
         #                        0, 3, 6, 9, 12, 15, 18, ...
         #
-        # !!! YOUR CODE HERE
-        feature_map = _
-        for x in _:
-            for y in _:
-                feature_map[_] = _
+        feature_map = np.empty([Ny, Nx], dtype = float)
+        for x in range(Nx):
+            for y in range(Ny):
+                feature_map[y, x] = np.sum(np.multiply(ker, img[y*stride:y*stride+j,x*stride:x*stride+i]))
         # !!! ==============
         feature_maps.append(feature_map)
 
     # Now take the code from `conv2d_many` that `np.stack`s the feature maps:
     #
     # !!! YOUR CODE HERE
-    stacked_feature_maps = np.stack(feature_maps, axis=_)
+    stacked_feature_maps = np.stack(feature_maps, axis=2)
     # !!! ==============
 
     return stacked_feature_maps
@@ -361,21 +362,21 @@ def maxpool2d(img, size=3, stride=3):
     # don't re-implement everything, just copy your old code!!!
     #
     # !!! YOUR CODE HERE
-    y_pad = _
-    x_pad = _
-    c_pad = _
+    y_pad = (i - 1) // 2
+    x_pad = (j - 1) // 2
+    c_pad = 0
 
     padding = ((y_pad, y_pad), (x_pad, x_pad), (c_pad, c_pad))
     img = np.pad(img, padding)
 
-    m, n, ic = _
+    m, n, ic = img.shape
 
-    Nx = _
-    Ny = _
-
-    feature_map = _
-    for x in _:
-        for y in _:
-            feature_map[_] = _
+    Nx = (n - i + 1) // stride
+    Ny = (m - j + 1) // stride
+    
+    feature_map = np.empty([Ny, Nx], dtype = float)
+    for x in range(Nx):
+        for y in range(Ny):
+            feature_map[y, x] = np.max(img[y*stride:y*stride+j,x*stride:x*stride+i])
     # !!! ==============
     return feature_map
