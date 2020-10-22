@@ -9,6 +9,39 @@
 * **Piazza**: https://piazza.com/class/k6ip3fsmllu4zw
 * **Anaconda Commands**: https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html
 
+**Week 8 Control Theory**:
+
+Lecture slides: https://docs.google.com/presentation/d/1A9dYKlm2WGc4HPRNWtgkLyKQ0i9gTb60VZnDAe8dF1Y/edit?usp=sharing
+
+Zoom Recording: https://drive.google.com/open?id=1kyj_Q5M9wAZoEqgBHHSnLmKlSNeNRqXF
+
+Familiarize yourself with control loops with waypoints. Implement PID with a 3-dimensional state and a 2-dimensional action.
+Explore Iterative LQR and select a suitable quadratic cost for our system. 
+
+Make sure you have diffopt installed `pip install git+http://github.com/brandontrabucco/diffopt.git`
+
+* Look at:
+  * Slides
+  * demos/week8/PID_demo.ipynb
+  * hw/control/control_loop.py
+* Write in:
+  * hw/control/pid.py (most information is in here, check-in at the bottom)
+  * hw/control/ilqr.py
+
+**Week 7 Path Planning**:
+
+Lecture slides: https://docs.google.com/presentation/d/1ohDzFXFGfnbsVfCOMScSdRRLCVKZ_Lq78YvOIeca86E/edit?usp=sharing
+
+Zoom Recording: https://drive.google.com/a/berkeley.edu/file/d/1qH4csVhhGfsOgerUxwxu1Z4MXlBOr9mF/view?usp=sharing
+
+Implement Rapidly-exploring Random Trees, with the improvement that finds the shortest path. 
+
+* Look at:
+  * Slides
+  * hw/path_planning/utils.py
+* Write in:
+  * hw/path_planning/rrt_star_assignment.py
+
 **Week 5 Deep Computer Vision**:
 
 Lecture slides: https://docs.google.com/presentation/d/1X5kHoORE_AFA88fthX985rMfqVqTUkPlxaDaFltSn-4/edit?usp=sharing
